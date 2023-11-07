@@ -1,7 +1,6 @@
-GH pages site data
-------------------
+# static data for my personal website
 
-This repository includes the shared files used on my various versions of my personal website hosted on GH pages, pythonanywhere, and linode: [👩‍🚀AstroVueStaticSite](https://github.com/MarmadileManteater/AstroVueStaticSite), [⚡QwikStaticSite](https://github.com/MarmadileManteater/QwikStaticSite), [SvelteKitSite](https://github.com/MarmadileManteater/SvelteKitSite). 
+This repository contains all of the non-code assets for [my personal website](https://marmadilemanteater.dev).
 
 ### Licenses
 
