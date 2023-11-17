@@ -1,0 +1,18 @@
+{
+  "name": "marmadilemanteater",
+  "version": "3.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "clean": "pnpm clean-images && cd ./packages/jsdoc2ts && pnpm clean && cd ../dataservice && pnpm clean",
+    "build": "cd ./packages/jsdoc2ts && pnpm build && cd ../dataservice && pnpm build && cd ../../ && pnpm unhotlink-images",
+    "update-projects": "node ./packages/static-data-updater update-projects",
+    "unhotlink-images": "node ./packages/static-data-updater unhotlink-images",
+    "clean-images": "node ./packages/static-data-updater clean-images",
+    "dev": "cd ./websites/personal-site && pnpm astro dev"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
