@@ -21,7 +21,8 @@
   },
   {
     "name": "cordova",
-    "link": "https://cordova.apache.org/"
+    "link": "https://cordova.apache.org/",
+    "hashtags": ["cordova"]
   },
   {
     "name": "invidious",
@@ -45,11 +46,13 @@
   },
   {
     "name": "godot",
-    "link": "https://godotengine.org/"
+    "link": "https://godotengine.org/",
+    "hashtags": ["GodotEngine"]
   },
   {
     "name": "spooky-2d-jam-2022",
-    "link": "https://itch.io/jam/spooky-2d-jam-2022"
+    "link": "https://itch.io/jam/spooky-2d-jam-2022",
+    "hashtags": ["Spooky2DJam"]
   },
   {
     "name": "astro",
@@ -81,6 +84,7 @@
   },
   {
     "name": "spooky-2d-jam-2023",
-    "link": "https://itch.io/jam/spooky-2d-jam-23"
+    "link": "https://itch.io/jam/spooky-2d-jam-23",
+    "hashtags": ["Spooky2DJam"]
   }
 ]
