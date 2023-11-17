@@ -65,13 +65,13 @@ export async function getAllBlogPostIdsSorted(directory) {
 async function getGitDateFromPath(path) {
   const directory = dirname(path)
   const id = basename(path).replace('.html', '')
-
-  const gitDateResult = (await pexec(`cd ${directory} && git log -1 -p "${id}.html"`)).stdout
+  const command = `cd ${directory} && git log --follow --pretty=format:"%h %ad %s" --date=format:'(%Y-%m-%d)' -- "${id}.html" | grep -v '80fe391'`// ignore this specific commit because it is the commit that merged the repositories
+  const gitDateResult = (await pexec(command)).stdout
   return Date.parse(
     Array.from(
       gitDateResult
         .toString()
-        .matchAll(/Date: {3}([A-Za-z]{3} [A-Za-z]{3} [0-9]{2} [0-9]{2}:[0-9]{2}:[0-9]{2} [0-9]{4} [-+][0-9]{4})/g))[0][1]
+        .matchAll(/\(([0-9]{4}-[0-9]{2}-[0-9]{2})\)/g))[0][1]
     )
 }
 
