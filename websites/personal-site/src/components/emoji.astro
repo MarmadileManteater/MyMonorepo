@@ -1,0 +1,22 @@
+---
+import { parseEmojiInString } from '@marmadilemanteater/emoji-to-othermoji'
+import { readdir } from 'fs/promises'
+
+interface Props {
+  emoji?: string
+}
+
+const { emoji }: Props = Astro.props
+
+export const dirListings = [
+  (await readdir('../../packages/static-data/public/images/emoji/mutantstd')).map(file => `/images/emoji/mutantstd/${file}`),
+  (await readdir('../../packages/static-data/public/images/emoji/twemoji')).map(file => `/images/emoji/twemoji/${file}`)
+]
+
+export function parseEmoji(emojiString: string) {
+  return parseEmojiInString(emojiString, dirListings)
+}
+
+const html = Astro.slots.has('default') ? parseEmoji(await Astro.slots.render('default')) : (emoji !== undefined ? parseEmoji(emoji) : '')
+---
+<Fragment set:html={html} />

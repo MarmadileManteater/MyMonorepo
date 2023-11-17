@@ -1,0 +1,24 @@
+{
+  "name": "@marmadilemanteater/personal-site",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@marmadilemanteater/astro-logic-components": "workspace:^",
+    "@marmadilemanteater/dataservice": "workspace:^",
+    "@marmadilemanteater/emoji-to-othermoji": "workspace:^",
+    "astro": "^3.4.2",
+    "@astrojs/rss": "^3.0.0",
+    "less": "^4.2.0",
+    "jsdom": "^22.1.0"
+  },
+  "devDependencies": {
+    "vite-imagetools": "^6.2.3"
+  }
+}
