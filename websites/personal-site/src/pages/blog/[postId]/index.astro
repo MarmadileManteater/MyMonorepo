@@ -27,7 +27,7 @@ const shortDate = formatShortDate(date)
 const longDate = formatLongDate(date)
 ---
 
-<MasterTemplate title={post.title}>
+<MasterTemplate title={post.title} pathname='/blog/[postId]/'>
   <article class='card-top'>
     <h1><Emoji>{post.title}</Emoji></h1>
     <If condition={postTags.length !== 0}>

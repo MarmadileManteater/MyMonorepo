@@ -4,6 +4,7 @@ import { Foreach } from '@marmadilemanteater/astro-logic-components'
 import type { Link } from '@marmadilemanteater/dataservice/links'
 import Emoji from '../emoji.astro';
 import type { HTMLAttributes } from 'astro/types'
+import { sourceUrlBase } from '../../dataservice';
 
 interface Props extends HTMLAttributes<'section'> {
   links: Link[]
@@ -12,6 +13,7 @@ interface Props extends HTMLAttributes<'section'> {
 const { links, ...rest }: Props = Astro.props
 ---
 <section class=`link-list ${Astro.props.class || ''}` {...rest}>
+  <Fragment set:html={`<!-- component source: ${new URL('src/components/links/links.astro', sourceUrlBase)} -->`} />
   <Foreach
     list={links}
   >

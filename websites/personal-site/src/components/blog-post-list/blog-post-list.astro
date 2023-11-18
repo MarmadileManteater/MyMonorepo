@@ -7,6 +7,7 @@ import type { Tag } from '@marmadilemanteater/dataservice/tags'
 import { formatLongDate, formatShortDate } from '../../helpers'
 import Emoji from '../emoji.astro'
 import type { HTMLAttributes } from 'astro/types'
+import { sourceUrlBase } from '../../dataservice'
 
 interface Props extends HTMLAttributes<'section'> {
   posts: BlogPost[],
@@ -22,6 +23,7 @@ delete rest['class']
   {...rest}
   class={`blog-post-list ${Astro.props.class || ''}`}
 >
+  <Fragment set:html={`<!-- component source: ${new URL('src/components/blog-post-list/blog-post-list.astro', sourceUrlBase)} -->`} />
   <slot name='top' />
   <Foreach
     list={posts}

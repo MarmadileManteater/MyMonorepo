@@ -10,6 +10,7 @@ import jsLogo from '../../../../../packages/static-data/public/images/logos/js-l
 import csharpLogo from '../../../../../packages/static-data/public/images/logos/csharp-logo.png?format=webp&w=40&h=40'
 // @ts-ignore
 import pythonLogo from '../../../../../packages/static-data/public/images/logos/python-logo.png?format=webp&w=40&h=40'
+import { sourceUrlBase } from '../../dataservice'
 
 const logos: Record<string, any> = {
   'javascript': jsLogo,
@@ -32,6 +33,7 @@ tags.sort((a, b) => langsWithImages.indexOf(b.name) - langsWithImages.indexOf(a.
  class='tag-list'
  {...rest}
 >
+  <Fragment set:html={`<!-- component source: ${new URL('src/components/tag-list/tag-list.astro', sourceUrlBase)} -->`} />
   <Foreach
     list={tags}
   >

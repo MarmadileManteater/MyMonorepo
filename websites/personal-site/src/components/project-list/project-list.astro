@@ -7,6 +7,7 @@ import type { HTMLAttributes } from 'astro/types'
 import Emoji from '../emoji.astro'
 import TagList from '../tag-list/tag-list.astro'
 import { formatLongDate, formatShortDate } from '../../helpers'
+import { sourceUrlBase } from '../../dataservice'
 
 type ProjectPlus = Project & { 
   /** the index of this item in the original JSON */ 
@@ -59,6 +60,7 @@ if (sortType !== 'featured' && sortType !== undefined) {
   {...rest}
   class={`project-list card-top ${Astro.props.class || ''}`}
 >
+  <Fragment set:html={`<!-- component source: ${new URL('src/components/project-list/project-list.astro', sourceUrlBase)} -->`} />
   <If condition={sortType !== undefined}>
     <nav>
       <strong><em>Sort By:</em></strong>

@@ -1,12 +1,16 @@
 ---
 import { If } from '@marmadilemanteater/astro-logic-components'
+import { sourceUrlBase } from '../dataservice';
 interface Props {
   title?: string
+  pathname?: string
 }
-const { title } = Astro.props
+const { title, pathname } = Astro.props
+
 ---
 <!DOCTYPE HTML>
 <html>
+  <Fragment set:html={`<!-- page source: ${new URL(`./src/pages${pathname || Astro.url.pathname}index.astro`, sourceUrlBase)} -->`} />
   <head>
     <meta charset="utf-8" />
     <link rel="icon" href="/favicon.ico" />
