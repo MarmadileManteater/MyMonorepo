@@ -12,6 +12,7 @@
   "license": "ISC",
   "dependencies": {
     "@astrojs/rss": "^3.0.0",
+    "@liquify/prettify": "0.5.5-beta.1",
     "@marmadilemanteater/astro-logic-components": "workspace:^",
     "@marmadilemanteater/dataservice": "workspace:^",
     "@marmadilemanteater/emoji-to-othermoji": "workspace:^",

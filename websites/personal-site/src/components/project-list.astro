@@ -18,10 +18,13 @@ interface Props extends HTMLAttributes<'section'> {
   projects: Project[],
   tags: Tag[],
   sortType?: SortType,
-  startOffset?: number
+  startOffset?: number,
+  class: string|undefined
 }
 
 const { projects, tags, sortType, startOffset = 0, ...rest }: Props = Astro.props
+delete rest['class']
+
 const projectsPlus = projects.map((project, i) => {
   const plus = project as ProjectPlus
   plus.featuredIndex = i
@@ -49,10 +52,10 @@ if (sortType !== 'featured' && sortType !== undefined) {
 }
 ---
 <section
-  class=`project-list card-top ${Astro.props.class || ''}`
   data-sort-type={sortType}
   data-start-offset={startOffset}
   {...rest}
+  class={`project-list card-top ${Astro.props.class || ''}`}
 >
   <If condition={sortType !== undefined}>
     <nav>
@@ -158,7 +161,7 @@ if (sortType !== 'featured' && sortType !== undefined) {
         }
         sortBy(null, type)
       })
-      /** @type {Element} \<section\> */ 
+      /** @type {Element} */ 
       const parentElement = document.currentScript.parentElement
       const startOffset = parseInt(parentElement.getAttribute('data-start-offset'))
       let sortType = parentElement.getAttribute('data-sort-type')

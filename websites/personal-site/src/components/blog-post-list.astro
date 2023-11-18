@@ -10,14 +10,15 @@ import type { HTMLAttributes } from 'astro/types'
 interface Props extends HTMLAttributes<'section'> {
   posts: BlogPost[],
   tags: Tag[],
-  class: string
+  class: string|undefined
 }
 
 const { posts, tags, ...rest }: Props = Astro.props
+delete rest['class']
 ---
 <section 
-  class=`blog-post-list ${Astro.props.class || ''}`
   {...rest}
+  class={`blog-post-list ${Astro.props.class || ''}`}
 >
   <slot name='top' />
   <Foreach
