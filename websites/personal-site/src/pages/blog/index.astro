@@ -1,4 +1,5 @@
 ---
+import './styles.less'
 import MasterTemplate from '../../layouts/master.astro'
 import Emoji from '../../components/emoji.astro'
 import BlogPostList from '../../components/blog-post-list/blog-post-list.astro'
@@ -12,27 +13,3 @@ const allPosts = await Promise.all(ids.map((id) => blogPostRepository.getBlogPos
     <p slot='top' class='rss-link'><a href='/blog/rss.xml'><Emoji emoji='📰' /> rss</a></p>
   </BlogPostList>
 </MasterTemplate>
-<style lang='less' is:global>
-  @import url(../../variables.less);
-
-  .rss-link {
-    background-color: @bg-light-2;
-    margin: 0;
-    padding: 1em 1em 1em;
-    @media (prefers-color-scheme: dark) {
-      background-color: @bg-dark-2;
-    }
-  }
-  .rss-link a {
-    color: black;
-    @media (prefers-color-scheme: dark) {
-      color: white;
-    }
-  }
-  .blog-post-list a {
-    color: black;
-    @media (prefers-color-scheme: dark) {
-      color: white;
-    }
-  }
-</style>
