@@ -39,15 +39,22 @@ const longDate = formatLongDate(date)
   <If condition={usesTailwind} >
     <style is:inline>
       /** prebaked tailwind which only covers the classes used within my blog posts up until Sept 2023 */
-      pre div {
-        background-color: black;
-        padding: 1em 0.5em;
-      }
+
       pre,
       h3,
       h4,
       p {
         margin: 0;
+      }
+      pre {
+        padding-top: 0;
+        padding-bottom: 0.5em;
+        margin-bottom: 3.5em;
+        top: 1.5em;
+        position: relative;
+      }
+      pre + h4 + pre:last-of-type {
+        margin-bottom: 1em;
       }
       .visible {
         visibility: visible;
