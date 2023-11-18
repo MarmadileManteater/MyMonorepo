@@ -6,9 +6,11 @@ import { promisify } from 'util'
 import { exec } from 'child_process'
 import { basename, dirname, join } from 'path'
 import { fileURLToPath } from 'url'
-import { DOMParser, XMLSerializer } from '@xmldom/xmldom'
 import hljs from 'highlight.js'
 import hljspkg from 'highlight.js/package.json'
+import jsdom from 'jsdom'
+const { JSDOM } = jsdom
+
 /** import all highlight js styles */
 const styles = Object.fromEntries(
   Object.entries(
@@ -105,38 +107,36 @@ export async function getBlogPost(path, hljsStyles = null) {
   }
   // #endregion
   // #region 🧹Parse the HTML and remove the metadata from the markup
-  // TODO ✏ replace xmldom with jsdom to reduce deps for monorepo
-  const parser = new DOMParser()
-  const postMarkup = parser.parseFromString(blogPostHTML, 'text/html')
+  const postMarkup = new JSDOM(blogPostHTML).window.document.querySelector('root')
   // Get the title
-  const titleElement = postMarkup.getElementById('title')
+  const titleElement = postMarkup?.querySelector('#title')
   const title = titleElement?.childNodes[0].textContent || ''
-  if (titleElement !== null)
-    postMarkup.removeChild(titleElement)
+  if (titleElement !== null && titleElement !== undefined)
+    postMarkup?.removeChild(titleElement)
   // Get the short description
-  const shortDescriptionElement = postMarkup.getElementById('short-description')
+  const shortDescriptionElement = postMarkup?.querySelector('#short-description')
   const shortDescription = shortDescriptionElement?.childNodes[0].textContent || ''
-  if (shortDescriptionElement !== null)
-    postMarkup.removeChild(shortDescriptionElement)
+  if (shortDescriptionElement !== null && shortDescriptionElement !== undefined)
+    postMarkup?.removeChild(shortDescriptionElement)
   // Get the tags
-  const tagsElement = postMarkup.getElementById('tags')
+  const tagsElement = postMarkup?.querySelector('#tags')
   const tagElements = Array.from(tagsElement?.childNodes?tagsElement?.childNodes:[]).filter((node) => node.textContent?.trim() !== '')
   const tags = Array.from(tagElements?tagElements:[]).map((tag) => tag.textContent || '')
-  if (tagsElement !== null)
-    postMarkup.removeChild(tagsElement)
+  if (tagsElement !== null && tagsElement !== undefined)
+    postMarkup?.removeChild(tagsElement)
   let usesHljs = false
   // Return a well-formatted object
-  Array.from(postMarkup.getElementsByTagName('code')).map((element) => {
+  Array.from(postMarkup?.querySelectorAll('code') || []).map((element) => {
     usesHljs = true
     const htmlFormattedCode = hljs.highlightAuto(element.textContent || '', ['javascript', 'html']).value
-    const newElement = parser.parseFromString(`<div><div>${htmlFormattedCode}</div></div>`).firstChild?.childNodes[0]
+    const newElement = new JSDOM(`<div id="formatted"><div>${htmlFormattedCode}</div></div>`).window.document.querySelector('#formatted')?.firstChild
     if (newElement && element.parentNode) {
       element.parentNode.insertBefore(newElement, element)
       element.parentNode.removeChild(element)
     }
   })
   // 🔨 Fix relative image links
-  const images = postMarkup.getElementsByTagName("img")
+  const images = postMarkup?.querySelectorAll("img") || []
   Array.from(images).forEach((image) => {
     let src
     if ((src = image.getAttribute('src')) !== null) {
@@ -145,7 +145,7 @@ export async function getBlogPost(path, hljsStyles = null) {
       }
     }
   })
-  const html = new XMLSerializer().serializeToString(postMarkup)
+  const html = postMarkup?.outerHTML
   // #endregion
   // generate cjs dirname from esm syntax
   const __dirname = dirname(fileURLToPath(import.meta.url))
