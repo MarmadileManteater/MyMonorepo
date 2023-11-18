@@ -1,7 +1,7 @@
 ---
 import MasterTemplate from '../../../layouts/master.astro'
 import { projectsRepository, allTags } from '../../../dataservice'
-import ProjectList from '../../../components/project-list.astro'
+import ProjectList from '../../../components/project-list/project-list.astro'
 
 const { getAllProjects } = projectsRepository
 const projects = await getAllProjects()

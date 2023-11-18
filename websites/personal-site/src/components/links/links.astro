@@ -1,0 +1,25 @@
+---
+import './links.less'
+import { Foreach } from '@marmadilemanteater/astro-logic-components'
+import type { Link } from '@marmadilemanteater/dataservice/links'
+import Emoji from '../emoji.astro';
+import type { HTMLAttributes } from 'astro/types'
+
+interface Props extends HTMLAttributes<'section'> {
+  links: Link[]
+}
+
+const { links, ...rest }: Props = Astro.props
+---
+<section class=`link-list ${Astro.props.class || ''}` {...rest}>
+  <Foreach
+    list={links}
+  >
+    {(link: Link) => <>
+      <a 
+        href={link.url}
+        rel='me'
+      ><Emoji emoji={link.emoji} />&nbsp;{link.name}</a>
+    </>}
+  </Foreach>
+</section>

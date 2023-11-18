@@ -1,7 +1,7 @@
 ---
 import MasterTemplate from '../../layouts/master.astro'
 import Emoji from '../../components/emoji.astro'
-import BlogPostList from '../../components/blog-post-list.astro'
+import BlogPostList from '../../components/blog-post-list/blog-post-list.astro'
 import { blogPostRepository, allTags } from '../../dataservice'
 const ids = await blogPostRepository.getAllIdsSorted()
 const allPosts = await Promise.all(ids.map((id) => blogPostRepository.getBlogPost(id)))
