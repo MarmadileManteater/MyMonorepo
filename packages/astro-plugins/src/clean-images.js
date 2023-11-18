@@ -1,5 +1,5 @@
 import { fileURLToPath } from 'url'
-import { join } from 'path'
+import { dirname, join } from 'path'
 import { readFile, readdir, rm, stat } from 'fs/promises'
 import jsdom from 'jsdom'
 
@@ -10,9 +10,10 @@ const {
 /**
  * @param  {string[]} directories 📂 a list of directories to be checked
  * @param {Boolean} recursive 📁 whether or not to look in all subdirectories or not
+ * @param {Boolean} (defaults to false) display debug logs
  * @returns {import('astro').AstroIntegration}
  */
-export function cleanUpImagesIn(directories, recursive = false) {
+export function cleanUpImagesIn(directories, recursive = false, debug = false) {
   return {
     name: '🧹Clean up unused images',
     hooks: {
@@ -37,18 +38,25 @@ export function cleanUpImagesIn(directories, recursive = false) {
         for (const directory of directories) {
           const path = join(outputDir, directory)
           const filesFound = await readdir(path)
+          let filesDeleted = 0
           for (const file of filesFound) {
             const relativePath = join(`/${directory}`, file).replaceAll('\\', '/')
             if (filesToKeep.indexOf(relativePath) === -1) {
               const filePath = join(path, file)
               if (!(await stat(filePath)).isDirectory()) {
                 // file found in output directory, but not referenced in any html file
-                console.log(`🧹 Removing unused image: ${relativePath}`)
+                if (debug) {
+                  console.log(`[DEBUG]: 🧹 Removing unused image: ${relativePath}`)
+                }
+                filesDeleted++
                 await rm(filePath)
               } else if (recursive) {
                 directories.push(relativePath.substring(1))
               }
             }
+          }
+          if (!debug && filesDeleted !== 0) {
+            console.log(`🧹 Removed ${filesDeleted} file${filesDeleted !== 1?'s':''} from ${directory}`)
           }
         }
       }
