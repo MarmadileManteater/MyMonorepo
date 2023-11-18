@@ -1,6 +1,7 @@
 ---
 import './master.less'
 import { If } from '@marmadilemanteater/astro-logic-components'
+import SiteFooter from '../components/site-footer/site-footer.astro'
 import { sourceUrlBase } from '../dataservice'
 
 interface Props {
@@ -24,14 +25,17 @@ const { title, pathname } = Astro.props
     <slot name="head" />
   </head>
   <body>
-    <header>
-      <a href='/' >
-        <img src='/images/name-pink.gif' class='header-image' alt='emma' />
-        <img src='/images/username.gif' class='username' />
-      </a>
-    </header>
-    <main>
-      <slot />
-    </main>
+    <div id='pre-footer' >
+      <header>
+        <a href='/' >
+          <img src='/images/name-pink.gif' class='header-image' alt='emma' />
+          <img src='/images/username.gif' class='username' />
+        </a>
+      </header>
+      <main>
+        <slot />
+      </main>
+    </div>
+    <SiteFooter />
   </body>
 </html>

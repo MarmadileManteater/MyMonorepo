@@ -1,0 +1,26 @@
+---
+import './site-footer.less'
+import Emoji from '../emoji.astro'
+import { formatShortDate, formatLongDate } from '../../helpers'
+const currentDate = new Date()
+const longDate = formatLongDate(currentDate)
+const shortDate = formatShortDate(currentDate)
+---
+<footer class='site-footer'>
+  <section class='left'>
+    <section class='last-modified'>
+      Site last modified: <time datetime={shortDate}>{longDate}</time>
+    </section>
+    <section class='emoji-licenses'>
+      <p>
+        <a href='https://mutant.tech/'>Mutant Standard</a> emoji by <a href='https://dzuk.zone/'>Dzuk</a>, are licensed under <a href='https://creativecommons.org/licenses/by-nc-sa/4.0/'>CC BY-NC-SA 4.0 International</a>.
+      </p>
+      <p>
+        <a href='https://twemoji.twitter.com/'>Twemoji</a> emoji by <a href='https://github.com/twitter'>Twitter, Inc and other contributors</a> are licensed under <a href='https://creativecommons.org/licenses/by/4.0/'>CC BY 4.0 International</a>.</p>
+    </section>
+  </section>
+  <section class='view-source'>
+    <div>Made with <Emoji emoji='♥' /> & <a class='nowrap' href='https://astro.build/'><Emoji emoji='👩‍🚀' />Astro</a></div>
+    <a href='https://github.com/MarmadileManteater/MyMonorepo/development/websites/personal-site'>View source &raquo;</a>
+  </section>
+</footer>

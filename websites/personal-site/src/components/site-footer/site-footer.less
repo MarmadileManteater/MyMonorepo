@@ -1,0 +1,40 @@
+@import url(../../variables.less);
+
+footer.site-footer {
+  margin-top: 2em;
+  background-color: #0a0a0a;
+  color: white;
+  padding-top: 1em;
+  display: flex;
+  justify-content: space-between;
+  padding: 1em;
+  @media (max-width: @lg-breakpoint) {
+    flex-direction: column;
+  }
+}
+
+footer.site-footer a,
+footer.site-footer a:visited {
+  @media (prefers-color-scheme: light) {
+    color: saturate(lighten(@link-light, 20), 14);
+  }
+}
+
+footer.site-footer .view-source {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+footer.site-footer .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: end;
+}
+
+footer.site-footer .left p {
+  margin-bottom: 0;
+  @media (max-width: @lg-breakpoint) {
+    margin-bottom: 1em;
+  }
+}
