@@ -32,7 +32,6 @@ export default defineConfig({
             const pres = Array.from(doc.window.document.querySelectorAll('pre')).map((pre) => pre.outerHTML)
             // replace all `pre` elements with placeholders
             for (let i = 0; i < pres.length; i++) {
-              console.log(pres[i])
               html = html.replace(pres[i], `<pre-${i} />`)
             }
 
