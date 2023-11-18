@@ -23,6 +23,7 @@ interface Props extends HTMLAttributes<'section'> {
 }
 
 const { projects, tags, sortType, startOffset = 0, ...rest }: Props = Astro.props
+// this is to prevent duplicate `class` attributes
 delete rest['class']
 
 const projectsPlus = projects.map((project, i) => {
