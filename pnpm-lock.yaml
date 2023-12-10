@@ -78,6 +78,14 @@ importers:
         specifier: ^4.4.11
         version: 4.5.0(less@4.2.0)
 
+  packages/simple-rss-aggregator: {}
+
+  packages/social-feed:
+    devDependencies:
+      '@marmadilemanteater/simple-rss-aggregator':
+        specifier: workspace:^
+        version: link:../simple-rss-aggregator
+
   packages/static-data-updater:
     dependencies:
       '@marmadilemanteater/dataservice':
