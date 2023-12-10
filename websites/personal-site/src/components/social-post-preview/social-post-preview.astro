@@ -1,0 +1,69 @@
+---
+import { Foreach, If } from '@marmadilemanteater/astro-logic-components'
+import type { SocialPost, Media } from '@marmadilemanteater/dataservice/social-posts'
+import Time from '../time.astro'
+import Emoji from '../emoji.astro'
+
+interface Props {
+  socialPosts: SocialPost[]
+}
+
+const { socialPosts }: Props = Astro.props
+---
+
+<Foreach
+  list={socialPosts}
+>
+  {(post: SocialPost) =>  {
+    let { handle, platformUrl } = post
+    let siteName = ''
+    let icon = post.platformUrl.indexOf('gamemaking.social') !== -1 ? '🐘' : 
+            post.platformUrl.indexOf('pxlmo.com') !== -1 ? '📷' :
+            post.platformUrl.indexOf('programming.dev') !== -1 ? '🐀' :
+            post.platformUrl.indexOf('marmadilemanteater.dev') !== -1 ? '📝' :
+            post.platformUrl.indexOf('itch.io') !== -1 ? '🕹' :
+            post.platformUrl.indexOf('opengameart.org') !== -1 ? '🎨' :
+            ''
+    if (post.handle.indexOf(' on ') !== -1) {
+      const [name, site] = post.handle.split(' on ')
+      handle = name
+      siteName = site
+    }
+    if (platformUrl.startsWith('https://marmadilemanteater.itch.io')) {
+      platformUrl = 'https://itch.io'
+    }
+    const descriptionText = post.description.replace(/<\/*?[^>]*?>/g, '')
+    const showTitle = !post.title.endsWith('...') && !descriptionText.startsWith(post.title)
+    return <>
+      <article>
+        <div class='author'>
+          <If condition={siteName === ''}>
+            <Emoji emoji={icon} />
+          </If>
+          <a href={post.authorUrl}>{handle}</a>
+          <If condition={siteName !== ''}> on <a href={platformUrl}><Emoji emoji={icon} />{siteName}</a></If>
+        </div>
+        <em><Time datetime={new Date(post.date)} displayUTCTime /></em>
+        <h3><If condition={showTitle}>{post.title}</If></h3>
+        <summary><Emoji><Fragment set:html={post.description} /></Emoji></summary>
+        <Foreach
+          list={post.media}
+        >
+          {(media: Media) => <>
+            <If condition={media.mimeType?.startsWith('image')}>
+              <a href={media.url}>
+                <img src={`${media.url}.webp`} />
+              </a>
+            </If>
+            <If condition={media.mimeType?.startsWith('video')}>
+              <video src={media.url} controls />
+            </If>
+          </>}
+        </Foreach>
+        <footer>
+          <a href={post.originalUrl}><Emoji emoji='🔗' /> Permalink</a>
+        </footer>
+      </article>
+    </>
+  }}
+</Foreach>

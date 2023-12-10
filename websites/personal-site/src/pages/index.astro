@@ -2,12 +2,16 @@
 import './styles.less'
 import MasterTemplate from '../layouts/master.astro'
 import ProjectList, { getProjectsSort } from '../components/project-list/project-list.astro'
+import SocialPostPreview from '../components/social-post-preview/social-post-preview.astro'
 import Links from '../components/links/links.astro'
 import { allLinks } from '../dataservice'
 import { allTags, projectsRepository } from '../dataservice'
 import Emoji from '../components/emoji.astro'
 // @ts-ignore
 import portrait from '../../../../packages/static-data/public/images/portrait.jpg?w=142&h=190&format=webp'
+import { getSocialPosts } from '@marmadilemanteater/dataservice/social-posts'
+
+const socialPosts =await getSocialPosts(0)
 
 const { getAllProjects } = projectsRepository
 const projects = await getAllProjects()
@@ -58,4 +62,5 @@ const firstStars = projects[index]
   <footer>
     <a href="/projects">View more &raquo;</a>
   </footer>
+  <SocialPostPreview {socialPosts} />
 </MasterTemplate>
