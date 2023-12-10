@@ -14,7 +14,14 @@ export const dirListings = [
 ]
 
 export function parseEmoji(emojiString: string) {
-  return parseEmojiInString(emojiString, dirListings)
+  return parseEmojiInString(emojiString, dirListings, (unicode) => {
+    if (unicode.startsWith('1f441-fe0f-200d-1f5e8-fe0f')) // 👁‍🗨
+      return '/images/emoji/mutantstd/1f441-200d-1f5e8.svg'
+    if (unicode === '1f4f7') // 📷
+      return '/images/emoji/mutantstd/1f4f7-fe0f.svg'
+    if (unicode === '2665' || unicode === '2764') // ♥
+      return '/images/emoji/mutantstd/2663-fe0f.svg'
+  })
 }
 
 const html = Astro.slots.has('default') ? parseEmoji(await Astro.slots.render('default')) : (emoji !== undefined ? parseEmoji(emoji) : '')
