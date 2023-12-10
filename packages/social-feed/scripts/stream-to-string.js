@@ -1,6 +1,10 @@
 
-
-export function streamToString(stream) {
+/**
+ * Converts a node readstream into a string
+ * @param {NodeJS.ReadStream} stream usually `process.stdin`
+ * @returns {Promise<string>}
+ */
+export function streamToString(stream = process.stdin) {
   return new Promise((resolve, _reject) => {
     let output = []
     stream.on('data', (data) => {
