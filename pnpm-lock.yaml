@@ -81,10 +81,16 @@ importers:
   packages/simple-rss-aggregator: {}
 
   packages/social-feed:
-    devDependencies:
-      '@marmadilemanteater/simple-rss-aggregator':
-        specifier: workspace:^
-        version: link:../simple-rss-aggregator
+    dependencies:
+      dom-parser:
+        specifier: ^0.1.6
+        version: 0.1.6
+      html-entities:
+        specifier: ^2.4.0
+        version: 2.4.0
+      undici:
+        specifier: ^5.23.0
+        version: 5.27.0
 
   packages/static-data-updater:
     dependencies:
@@ -922,6 +928,7 @@ packages:
 
   /abab@2.0.6:
     resolution: {integrity: sha512-j2afSsaIENvHZN2B8GOpF566vZ5WVk5opAiMTvWgaQT8DkbOqsTfvNAvHoRGU2zzP8cPoqys+xHTRDWW8L+/BA==}
+    deprecated: Use your platform's native atob() and btoa() methods instead
     dev: false
 
   /acorn@8.11.2:
@@ -1462,6 +1469,10 @@ packages:
   /dlv@1.1.3:
     resolution: {integrity: sha512-+HlytyjlPKnIG8XuRG8WvmBP8xs8P71y+SKKS6ZXWoEgLuePxtDoUEiH7WkdePWrQ5JBpE6aoVqfZfJUQkjXwA==}
 
+  /dom-parser@0.1.6:
+    resolution: {integrity: sha512-3nVRKbLEwmGfghLoeT1dxlK/0votalnOfasP+8VCHYDfDuCETY4LeMblfOeqww6XZk2ymZ1Uewy/hVad6Dy3yw==}
+    dev: false
+
   /domexception@4.0.0:
     resolution: {integrity: sha512-A2is4PLG+eeSfoTMA95/s4pvAoSo2mKtiM5jlHkAVewmiO8ISFTFKZjH7UAM1Atli/OT/7JHOrJRJiMKUZKYBw==}
     engines: {node: '>=12'}
@@ -1919,6 +1930,10 @@ packages:
     engines: {node: '>=12'}
     dependencies:
       whatwg-encoding: 2.0.0
+    dev: false
+
+  /html-entities@2.4.0:
+    resolution: {integrity: sha512-igBTJcNNNhvZFRtm8uA6xMY6xYleeDwn3PeBCkDz7tHttv4F2hsDI2aPgNERWzvRcNYHNT3ymRaQzllmXj4YsQ==}
     dev: false
 
   /html-escaper@3.0.3:

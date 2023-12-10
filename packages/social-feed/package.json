@@ -3,12 +3,18 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "output": "node ../simple-rss-aggregator output-rss feed.xml http://192.168.1.108:8080",
+    "fetch": "node ../simple-rss-aggregator fetch https://marmadilemanteater.dev/blog/rss.xml https://gamemaking.social/@emma.rss https://programming.dev/feeds/u/emma.xml?sort=New https://opengameart.org/users/105608/art.xml https://itch.io/games/newest/by-marmadilemanteater.xml https://pxlmo.com/users/emma.atom && node ./scripts/sort-db.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "devDependencies": {
+  "dependencies": {
+    "dom-parser": "^0.1.6",
+    "html-entities": "^2.4.0",
+    "undici": "^5.23.0"
   }
 }
