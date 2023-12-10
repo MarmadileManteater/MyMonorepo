@@ -26,13 +26,21 @@ footer.site-footer .view-source {
   justify-content: end;
 }
 
+footer.site-footer .view-source p {
+  margin-bottom: 0.5em;
+  @media (max-width: @lg-breakpoint) {
+    margin-top: 0.25em;
+    margin-bottom: 1em;
+  }
+}
+
 footer.site-footer .left {
   display: flex;
   flex-direction: column;
   justify-content: end;
 }
 
-footer.site-footer .left p {
+footer.site-footer .left p:last-child {
   margin-bottom: 0;
   @media (max-width: @lg-breakpoint) {
     margin-bottom: 1em;

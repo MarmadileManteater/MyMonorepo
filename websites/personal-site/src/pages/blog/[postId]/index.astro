@@ -29,7 +29,7 @@ const longDate = formatLongDate(date)
 ---
 
 <MasterTemplate title={post.title} pathname='/blog/[postId]/'>
-  <article class='card-top'>
+  <article class='card-top blog-post'>
     <h1><Emoji>{post.title}</Emoji></h1>
     <If condition={postTags.length !== 0}>
       <TagList tags={postTags} />
@@ -39,15 +39,13 @@ const longDate = formatLongDate(date)
   </article>
   <If condition={usesTailwind} >
     <style is:inline>
-      /** prebaked tailwind which only covers the classes used within my blog posts up until Sept 2023 */
-
-      pre,
-      h3,
-      h4,
-      p {
+      article.blog-post pre,
+      article.blog-post h3,
+      article.blog-post h4,
+      article.blog-post p:not(.tag-list, .date-text) {
         margin: 0;
       }
-      pre {
+      article.blog-post pre {
         padding-top: 0;
         padding-bottom: 0.5em;
         margin-bottom: 3.5em;
@@ -57,6 +55,7 @@ const longDate = formatLongDate(date)
       pre + h4 + pre:last-of-type {
         margin-bottom: 1em;
       }
+      /** prebaked tailwind which only covers the classes used within my blog posts up until Sept 2023 */
       .visible {
         visibility: visible;
       }
