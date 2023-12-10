@@ -4,7 +4,7 @@ import type { BlogPost } from '@marmadilemanteater/dataservice/blog-posts'
 import { If, Foreach } from '@marmadilemanteater/astro-logic-components'
 import TagList from '../tag-list/tag-list.astro'
 import type { Tag } from '@marmadilemanteater/dataservice/tags'
-import { formatLongDate, formatShortDate } from '../../helpers'
+import Time from '../time.astro'
 import Emoji from '../emoji.astro'
 import type { HTMLAttributes } from 'astro/types'
 import { sourceUrlBase } from '../../dataservice'
@@ -31,8 +31,6 @@ delete rest['class']
     {(post: BlogPost, i: number) => {
       const postTags = tags.filter(({name} : Tag) => post.tags.indexOf(name) !== -1)
       const date = new Date(post.gitDate)
-      const shortDate = formatShortDate(date)
-      const longDate = formatLongDate(date)
       return <article
         data-even={i % 2 === 0 ? 'true' : 'false'}
       >
@@ -41,7 +39,7 @@ delete rest['class']
         </If>
         <h1><a href={`/blog/${post.id}`}><Emoji>{post.title}</Emoji></a></h1>
         <summary><Emoji>{post.shortDescription}</Emoji></summary>
-        <p class='date-text'><em>Last updated: <time datetime={shortDate}>{longDate}</time></em></p>
+        <p class='date-text'><em>Last updated: <Time datetime={date} /></em></p>
       </article>
     }}
   </Foreach>

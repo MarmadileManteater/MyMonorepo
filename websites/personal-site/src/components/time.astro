@@ -1,0 +1,8 @@
+---
+import { formatLongDate, formatShortDate } from '../helpers'
+
+const { datetime } = Astro.props
+const shortDate = formatShortDate(datetime)
+const longDate = formatLongDate(datetime)
+---
+<time datetime={shortDate} >{longDate}</time>

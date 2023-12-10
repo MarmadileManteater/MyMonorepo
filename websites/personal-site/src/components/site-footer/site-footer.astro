@@ -1,15 +1,13 @@
 ---
 import './site-footer.less'
 import Emoji from '../emoji.astro'
-import { formatShortDate, formatLongDate } from '../../helpers'
+import Time from '../time.astro'
 const currentDate = new Date()
-const longDate = formatLongDate(currentDate)
-const shortDate = formatShortDate(currentDate)
 ---
 <footer class='site-footer'>
   <section class='left'>
     <section class='last-modified'>
-      Site last modified: <time datetime={shortDate}>{longDate}</time>
+      Site last modified: <Time datetime={currentDate} />
     </section>
     <section class='emoji-licenses'>
       <p>

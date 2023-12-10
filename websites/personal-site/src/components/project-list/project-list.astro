@@ -6,7 +6,7 @@ import type { Tag } from '@marmadilemanteater/dataservice/tags'
 import type { HTMLAttributes } from 'astro/types'
 import Emoji from '../emoji.astro'
 import TagList from '../tag-list/tag-list.astro'
-import { formatLongDate, formatShortDate } from '../../helpers'
+import Time from '../time.astro'
 import { sourceUrlBase } from '../../dataservice'
 
 type ProjectPlus = Project & { 
@@ -91,8 +91,6 @@ if (sortType !== 'featured' && sortType !== undefined) {
   >
     {(project: ProjectPlus, i: number) => {
         const date = new Date(project.lastUpdate)
-        const shortDate = formatShortDate(date)
-        const longDate = formatLongDate(date)
         const typeOfUpdate = project.pullUpdatedInfoFrom.replace('ts', 'tted to').replace('es', 'ed')
         const thumbnail = `/images/thumbnails/${project.title.replace(/!/g, '').replace(/\?/g, '')}.webp`
         const projectTags = tags.filter(({name} : Tag) => project.tags.indexOf(name) !== -1) 
@@ -146,7 +144,7 @@ if (sortType !== 'featured' && sortType !== undefined) {
             </p>
             <p
               class='last-updated'
-            ><em>Last {typeOfUpdate}: <a href={project.lastUpdateUrl}><time datetime={shortDate}>{longDate}</time></a></em></p>
+            ><em>Last {typeOfUpdate}: <a href={project.lastUpdateUrl}><Time datetime={date} /></a></em></p>
           </div>
         </article>
       }
