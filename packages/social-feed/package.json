@@ -16,5 +16,8 @@
     "dom-parser": "^0.1.6",
     "html-entities": "^2.4.0",
     "undici": "^5.23.0"
+  },
+  "devDependencies": {
+    "jsdom": "^22.1.0"
   }
 }
