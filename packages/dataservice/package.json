@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist/ && rm *.d.ts",
-    "build": "vite build -- blog-posts && vite build -- projects && vite build -- tags && vite build -- links && mv ./dist/*/*.* ./dist/ "
+    "build": "vite build -- blog-posts && vite build -- projects && vite build -- tags && vite build -- links && vite build -- social-posts && mv ./dist/*/*.* ./dist/ "
   },
   "keywords": [],
   "author": "",
@@ -14,7 +14,8 @@
   "dependencies": {
     "@marmadilemanteater/jsdocs2dts": "workspace:^",
     "highlight.js": "^11.9.0",
-    "jsdom": "^22.1.0"
+    "jsdom": "^22.1.0",
+    "xml2js": "^0.6.2"
   },
   "exports": {
     "./blog-posts": {
@@ -40,6 +41,12 @@
       "require": "./dist/links.cjs",
       "types": "./links.d.ts",
       "default": "./dist/links.js"
+    },
+    "./social-posts": {
+      "import": "./dist/social-posts.js",
+      "require": "./dist/social-posts.cjs",
+      "types": "./social-posts.d.ts",
+      "default": "./dist/social-posts.js"
     }
   },
   "devDependencies": {
