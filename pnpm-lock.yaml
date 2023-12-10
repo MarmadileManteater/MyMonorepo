@@ -88,6 +88,12 @@ importers:
       html-entities:
         specifier: ^2.4.0
         version: 2.4.0
+      jsdom:
+        specifier: ^22.1.0
+        version: 22.1.0
+      sharp:
+        specifier: ^0.32.6
+        version: 0.32.6
       undici:
         specifier: ^5.23.0
         version: 5.27.0

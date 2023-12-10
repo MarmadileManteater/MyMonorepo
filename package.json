@@ -8,8 +8,10 @@
     "clean": "pnpm clean-images && cd ./packages/jsdoc2ts && pnpm clean && cd ../dataservice && pnpm clean",
     "build": "cd ./packages/jsdoc2ts && pnpm build && cd ../dataservice && pnpm build && cd ../../ && pnpm unhotlink-images",
     "update-projects": "node ./packages/static-data-updater update-projects",
-    "unhotlink-images": "node ./packages/static-data-updater unhotlink-images",
+    "optimise-images": "node ./packages/static-data-updater unhotlink-images && cd ./packages/social-feed/ && node ./scripts/smallrify.js",
     "clean-images": "node ./packages/static-data-updater clean-images",
+    "update-social-feed": "cd ./packages/social-feed/ && pnpm run fetch",
+    "burn-social-feed": "cd ./packages/social-feed/ && pnpm run output",
     "dev": "cd ./websites/personal-site && pnpm astro dev"
   },
   "keywords": [],
