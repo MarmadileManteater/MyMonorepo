@@ -3,10 +3,10 @@
 import { parseString } from 'xml2js'
 import { promisify } from 'util'
 
-const pparseString = promisify(parseString)
 
+const pparseString = promisify(parseString)
 // load the social feed in through vite
-const socialFeed = import.meta.glob('../feed.txt')
+const socialFeed = import.meta.glob('../../social-feed/feed.xml', { as: 'raw' })
 
 /**
  * @typedef Media
@@ -36,7 +36,7 @@ const socialFeed = import.meta.glob('../feed.txt')
  * @returns {Promise<SocialPost[]>}
  */
 export async function getSocialPosts(startRange, endRange = -1) {
-  const rssFeedString = atob(((await socialFeed['../feed.txt']()).default).substring(23))
+  const rssFeedString = await socialFeed['../../social-feed/feed.xml']()
   const xmldom = await pparseString(rssFeedString)
   const channel = xmldom.rss.channel[0]
   if (endRange === -1) {

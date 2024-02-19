@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "clean": "rimraf dist/ && rm *.d.ts",
-    "build": "cp ../social-feed/feed.xml ./feed.txt && vite build -- blog-posts && vite build -- projects && vite build -- tags && vite build -- links && vite build -- social-posts && mv ./dist/*/*.* ./dist/ "
+    "build": " vite build -- blog-posts && vite build -- projects && vite build -- tags && vite build -- links && vite build -- social-posts && mv ./dist/*/*.* ./dist/ "
   },
   "keywords": [],
   "author": "",
