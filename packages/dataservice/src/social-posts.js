@@ -1,15 +1,12 @@
 
 // @ts-check
-
-import { readFile } from 'fs/promises'
-import { dirname, join } from 'path'
-import { fileURLToPath } from 'url'
 import { parseString } from 'xml2js'
 import { promisify } from 'util'
 
 const pparseString = promisify(parseString)
 
-const __dirname = dirname(fileURLToPath(new URL(import.meta.url)))
+// load the social feed in through vite
+const socialFeed = import.meta.glob('../feed.txt')
 
 /**
  * @typedef Media
@@ -39,9 +36,9 @@ const __dirname = dirname(fileURLToPath(new URL(import.meta.url)))
  * @returns {Promise<SocialPost[]>}
  */
 export async function getSocialPosts(startRange, endRange = -1) {
-  const rssFeedString = (await readFile(join(__dirname, '../../social-feed/feed.xml'))).toString()
+  const rssFeedString = atob(((await socialFeed['../feed.txt']()).default).substring(23))
   const xmldom = await pparseString(rssFeedString)
-  const channel = xmldom.channel[0]
+  const channel = xmldom.rss.channel[0]
   if (endRange === -1) {
     endRange = channel.item.length
   }
