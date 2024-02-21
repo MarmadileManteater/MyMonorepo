@@ -17,6 +17,7 @@
     "@marmadilemanteater/dataservice": "workspace:^",
     "@marmadilemanteater/emoji-to-othermoji": "workspace:^",
     "astro": "^3.4.2",
+    "file-type": "^19.0.0",
     "jsdom": "^22.1.0",
     "less": "^4.2.0"
   },

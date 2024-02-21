@@ -3,10 +3,11 @@
 import { parseString } from 'xml2js'
 import { promisify } from 'util'
 
+const BASE_HOST = 'https://marmadilemanteater.dev/'
 
 const pparseString = promisify(parseString)
 // load the social feed in through vite
-const socialFeed = import.meta.glob('../../social-feed/feed.xml', { as: 'raw' })
+const socialFeed = import.meta.glob('../../static-data/feed.xml', { as: 'raw' })
 
 /**
  * @typedef Media
@@ -35,8 +36,9 @@ const socialFeed = import.meta.glob('../../social-feed/feed.xml', { as: 'raw' })
  * @param {number} endRange
  * @returns {Promise<SocialPost[]>}
  */
-export async function getSocialPosts(startRange, endRange = -1) {
-  const rssFeedString = await socialFeed['../../social-feed/feed.xml']()
+export async function getSocialPosts(startRange, endRange = -1, host = 'https://marmadilemanteater.dev/') {
+  const rssFeedString = (await socialFeed['../../static-data/feed.xml']())
+    .replaceAll(BASE_HOST, host)
   const xmldom = await pparseString(rssFeedString)
   const channel = xmldom.rss.channel[0]
   if (endRange === -1) {
