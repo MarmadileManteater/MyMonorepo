@@ -8,6 +8,13 @@ interface Props {
   socialPosts: SocialPost[]
 }
 
+function getGridArea(mediaType: String, index: number, length: number) {
+  // always maximize grid area if there is only 1 media item
+  if (length === 1)
+    return 'image3'
+  return `${mediaType}${index}`
+}
+
 const { socialPosts }: Props = Astro.props
 ---
 <section class='social-post-preview'>
@@ -35,6 +42,8 @@ const { socialPosts }: Props = Astro.props
       const descriptionText = post.description.replace(/<\/*?[^>]*?>/g, '')
       const truncateContent = descriptionText.length > 250 && post.media[0].url !== undefined || platformUrl.startsWith('https://opengameart.org')
       const showTitle = !post.title.endsWith('...') && !descriptionText.startsWith(post.title)
+      const images = post.media.filter(item => item.url !== undefined && !item.url.endsWith('mp4'))
+      const videos = post.media.filter(item => item.url !== undefined && item.url.endsWith('mp4'))
       return <div>
         <article 
           class='social-post'
@@ -51,33 +60,55 @@ const { socialPosts }: Props = Astro.props
             <em><Time datetime={new Date(post.date)} displayUTCTime /></em>
             <If condition={showTitle}><h3>{post.title}</h3></If>
             <summary><Emoji><Fragment set:html={post.description} /></Emoji></summary>
+            <If condition={truncateContent}>
+              <div class='show-more-button'>
+                <a href={post.originalUrl}>Show more &raquo;</a></div>
+            </If>
           </div>
           <div class='media-gallery'>
-            <Foreach
-              list={post.media}
-            >
-              {(media: Media) => {
-                let url = media.url
-                try {
-                  url = new URL(media.url).pathname
-                } catch {
+            <If condition={images.length > 0} >
+              <div class='images' data-grid={images.length > 1 ? 'true' : 'false'}>
+                <Foreach
+                  list={images}
+                >
+                {(media: Media, i: number) => {
+                  let url = media.url
+                  try {
+                    url = new URL(media.url).pathname
+                  } catch {
 
-                }
-                return <>
-                  <If condition={media.mimeType?.startsWith('image')}>
-                    <a href={url}>
-                      <img 
-                        src={`${url}.webp`}
-                        alt={media.alt?media.alt:descriptionText}
-                        title={media.alt?media.alt:descriptionText} />
-                    </a>
-                  </If>
-                  <If condition={media.mimeType?.startsWith('video')}>
-                    <video src={url} controls />
-                  </If>
-                </>
-              }}
-            </Foreach>
+                  }
+                  return <a href={url}
+                        data-grid-area={getGridArea('image', i + 1, images.length)} >
+                        <img 
+                          src={`${url}.webp`}
+                          alt={media.alt?media.alt:descriptionText}
+                          title={media.alt?media.alt:descriptionText} />
+                      </a>
+                }}
+                </Foreach>
+              </div>
+            </If>
+            <If condition={videos.length > 0} >
+              <div class='videos' data-grid={videos.length > 1 ? 'true' : 'false'}>
+                <Foreach
+                  list={videos}
+                >
+                  {(media: Media, i: number) => {
+                    let url = media.url
+                    try {
+                      url = new URL(media.url).pathname
+                    } catch {
+
+                    }
+                    return <video 
+                        controls
+                        data-grid-area={getGridArea('video', i + 1, post.media.length)} 
+                        src={url} />
+                  }}
+                </Foreach>
+              </div>
+            </If>
           </div>
           <footer>
             <a href={post.originalUrl}><Emoji emoji='🔗' /> Permalink</a>
@@ -95,6 +126,10 @@ const { socialPosts }: Props = Astro.props
     display: flex;
     gap: 1em;
     justify-content:space-between;
+    @media (max-width: @lg-breakpoint) {
+      flex-direction: column;
+      gap: 0;
+    }
   }
   article.social-post {
     width: 320px;
@@ -105,11 +140,39 @@ const { socialPosts }: Props = Astro.props
     @media (prefers-color-scheme: dark) {
       background-color: @bg-dark-2;
     }
+    @media (max-width: @lg-breakpoint) {
+      width: 100%;
+      border-top-left-radius: 0;
+      border-top-right-radius: 0;
+    }
   }
   article.social-post[data-length="long"] .content {
     max-height: 200px;
     overflow: hidden;
+    @media (max-width: @lg-breakpoint) {
+      max-height: 100%;
+    }
   }
+
+  article.social-post[data-length="long"] .content .show-more-button {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    background: linear-gradient(#ffffff00,#000000ff);
+    height: 120px;
+    width: 100%;
+    @media (max-width: @lg-breakpoint) {
+      display: none;    
+    }
+  }
+  article.social-post[data-length="long"] .content .show-more-button a {
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    bottom: 10px;
+    color: white;
+  }
+
   article.social-post div.author {
     margin-block-start: 0.75em;
     margin-block-end: 0.75em;
@@ -144,31 +207,47 @@ const { socialPosts }: Props = Astro.props
     position: relative;
     z-index: 1;
   }
-  article.social-post .media-gallery a:first-of-type {
+  article.social-post .media-gallery a[data-grid-area="image1"] {
     grid-area: image1;
     object-fit: cover;
   }
-  article.social-post .media-gallery a:nth-of-type(2) {
+  a[data-grid-area="image2"] {
     grid-area: image2;
   }
-  article.social-post .media-gallery a:nth-of-type(3) {
+  article.social-post .media-gallery a[data-grid-area="image3"] {
     grid-area: image3;
   }
-  article.social-post .media-gallery video:first-of-type {
+  article.social-post .media-gallery video[data-grid-area="video1"] {
     grid-area: video1;
   }
-  article.social-post .media-gallery video:nth-of-type(2) {
+  article.social-post .media-gallery video[data-grid-area="video1"] {
     grid-area: video2;
   }
-  article.social-post .media-gallery {
+  @media (min-width: @lg-breakpoint) {
+    article.social-post .media-gallery a:last-child:not([data-grid-area="image2"]) {
+      max-height: 250px;
+      overflow: hidden;
+    }
+  }
+  article.social-post .media-gallery .videos {
     position: relative;
     z-index: 1;
     margin-bottom: -3px;
     display: grid;
     grid: 'video1 video1'
-          'video2 video2'
-          'image1 image2'
-          'image3 image3';
+          'video2 video2';
+  }
+  article.social-post .media-gallery .images {
+    position: relative;
+    z-index: 1;
+    margin-bottom: -3px;
+    display: grid;
+    grid: 'image1 image2' 'image3 image3' 'image3 image3';
+  }
+  article.social-post .media-gallery .images[data-grid="false"],
+  article.social-post .media-gallery .videos[data-grid="false"] {
+    display: flex;
+    flex-direction: column;
   }
   article.social-post .media-gallery img,
   article.social-post .media-gallery video {
