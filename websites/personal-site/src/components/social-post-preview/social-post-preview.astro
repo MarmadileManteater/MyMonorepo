@@ -10,60 +10,171 @@ interface Props {
 
 const { socialPosts }: Props = Astro.props
 ---
+<section class='social-post-preview'>
+  <Foreach
+    list={socialPosts}
+  >
+    {(post: SocialPost) =>  {
+      let { handle, platformUrl } = post
+      let siteName = ''
+      let icon = post.platformUrl.indexOf('gamemaking.social') !== -1 ? '🐘' : 
+              post.platformUrl.indexOf('pxlmo.com') !== -1 ? '📷' :
+              post.platformUrl.indexOf('programming.dev') !== -1 ? '🐀' :
+              post.platformUrl.indexOf('marmadilemanteater.dev') !== -1 ? '📝' :
+              post.platformUrl.indexOf('itch.io') !== -1 ? '🕹' :
+              post.platformUrl.indexOf('opengameart.org') !== -1 ? '🎨' :
+              ''
+      if (post.handle.indexOf(' on ') !== -1) {
+        const [name, site] = post.handle.split(' on ')
+        handle = name
+        siteName = site
+      }
+      if (platformUrl.startsWith('https://marmadilemanteater.itch.io')) {
+        platformUrl = 'https://itch.io'
+      }
+      const descriptionText = post.description.replace(/<\/*?[^>]*?>/g, '')
+      const truncateContent = descriptionText.length > 250 && post.media[0].url !== undefined || platformUrl.startsWith('https://opengameart.org')
+      const showTitle = !post.title.endsWith('...') && !descriptionText.startsWith(post.title)
+      return <div>
+        <article 
+          class='social-post'
+          data-length={truncateContent ? 'long' : 'short'}
+          >
+          <div class='content'>
+            <div class='author'>
+              <If condition={siteName === ''}>
+                <Emoji emoji={icon} />
+              </If>
+              <a href={post.authorUrl}>{handle}</a>
+              <If condition={siteName !== ''}> on <a href={platformUrl}><Emoji emoji={icon} />{siteName}</a></If>
+            </div>
+            <em><Time datetime={new Date(post.date)} displayUTCTime /></em>
+            <If condition={showTitle}><h3>{post.title}</h3></If>
+            <summary><Emoji><Fragment set:html={post.description} /></Emoji></summary>
+          </div>
+          <div class='media-gallery'>
+            <Foreach
+              list={post.media}
+            >
+              {(media: Media) => {
+                let url = media.url
+                try {
+                  url = new URL(media.url).pathname
+                } catch {
 
-<Foreach
-  list={socialPosts}
->
-  {(post: SocialPost) =>  {
-    let { handle, platformUrl } = post
-    let siteName = ''
-    let icon = post.platformUrl.indexOf('gamemaking.social') !== -1 ? '🐘' : 
-            post.platformUrl.indexOf('pxlmo.com') !== -1 ? '📷' :
-            post.platformUrl.indexOf('programming.dev') !== -1 ? '🐀' :
-            post.platformUrl.indexOf('marmadilemanteater.dev') !== -1 ? '📝' :
-            post.platformUrl.indexOf('itch.io') !== -1 ? '🕹' :
-            post.platformUrl.indexOf('opengameart.org') !== -1 ? '🎨' :
-            ''
-    if (post.handle.indexOf(' on ') !== -1) {
-      const [name, site] = post.handle.split(' on ')
-      handle = name
-      siteName = site
+                }
+                return <>
+                  <If condition={media.mimeType?.startsWith('image')}>
+                    <a href={url}>
+                      <img 
+                        src={`${url}.webp`}
+                        alt={media.alt?media.alt:descriptionText}
+                        title={media.alt?media.alt:descriptionText} />
+                    </a>
+                  </If>
+                  <If condition={media.mimeType?.startsWith('video')}>
+                    <video src={url} controls />
+                  </If>
+                </>
+              }}
+            </Foreach>
+          </div>
+          <footer>
+            <a href={post.originalUrl}><Emoji emoji='🔗' /> Permalink</a>
+          </footer>
+        </article>
+      </div>
+    }}
+  </Foreach>
+</section>
+
+<style lang='less' is:global>
+  @import url('../../variables.less');
+  section.social-post-preview {
+    margin-top: 1em;
+    display: flex;
+    gap: 1em;
+    justify-content:space-between;
+  }
+  article.social-post {
+    width: 320px;
+    box-sizing: border-box;
+    border-top-left-radius: 0.75em;
+    border-top-right-radius: 0.75em;
+    background-color: @bg-light-1;
+    @media (prefers-color-scheme: dark) {
+      background-color: @bg-dark-2;
     }
-    if (platformUrl.startsWith('https://marmadilemanteater.itch.io')) {
-      platformUrl = 'https://itch.io'
+  }
+  article.social-post[data-length="long"] .content {
+    max-height: 200px;
+    overflow: hidden;
+  }
+  article.social-post div.author {
+    margin-block-start: 0.75em;
+    margin-block-end: 0.75em;
+  }
+  article.social-post div.author,
+  article.social-post time {
+    font-size: 0.85em;
+    color: @date-text-light;
+    @media (prefers-color-scheme: dark) {
+      color: @date-text-dark;
     }
-    const descriptionText = post.description.replace(/<\/*?[^>]*?>/g, '')
-    const showTitle = !post.title.endsWith('...') && !descriptionText.startsWith(post.title)
-    return <>
-      <article>
-        <div class='author'>
-          <If condition={siteName === ''}>
-            <Emoji emoji={icon} />
-          </If>
-          <a href={post.authorUrl}>{handle}</a>
-          <If condition={siteName !== ''}> on <a href={platformUrl}><Emoji emoji={icon} />{siteName}</a></If>
-        </div>
-        <em><Time datetime={new Date(post.date)} displayUTCTime /></em>
-        <h3><If condition={showTitle}>{post.title}</If></h3>
-        <summary><Emoji><Fragment set:html={post.description} /></Emoji></summary>
-        <Foreach
-          list={post.media}
-        >
-          {(media: Media) => <>
-            <If condition={media.mimeType?.startsWith('image')}>
-              <a href={media.url}>
-                <img src={`${media.url}.webp`} />
-              </a>
-            </If>
-            <If condition={media.mimeType?.startsWith('video')}>
-              <video src={media.url} controls />
-            </If>
-          </>}
-        </Foreach>
-        <footer>
-          <a href={post.originalUrl}><Emoji emoji='🔗' /> Permalink</a>
-        </footer>
-      </article>
-    </>
-  }}
-</Foreach>
+  }
+  article.social-post time {
+  }
+  article.social-post .content {
+    padding: 0.75em;
+    padding-top: 0.5em;
+    padding-bottom: 0;
+    position: relative;
+    z-index: 0;
+  }
+  article.social-post summary {
+    margin-top: 1em;
+    margin-bottom: 1.25em;
+  }
+  article.social-post summary p:first-child {
+    margin-top: 0.75em;
+  }
+  article.social-post footer {
+    font-size: 0.8em;
+    padding: 0.75em;
+    position: relative;
+    z-index: 1;
+  }
+  article.social-post .media-gallery a:first-of-type {
+    grid-area: image1;
+    object-fit: cover;
+  }
+  article.social-post .media-gallery a:nth-of-type(2) {
+    grid-area: image2;
+  }
+  article.social-post .media-gallery a:nth-of-type(3) {
+    grid-area: image3;
+  }
+  article.social-post .media-gallery video:first-of-type {
+    grid-area: video1;
+  }
+  article.social-post .media-gallery video:nth-of-type(2) {
+    grid-area: video2;
+  }
+  article.social-post .media-gallery {
+    position: relative;
+    z-index: 1;
+    margin-bottom: -3px;
+    display: grid;
+    grid: 'video1 video1'
+          'video2 video2'
+          'image1 image2'
+          'image3 image3';
+  }
+  article.social-post .media-gallery img,
+  article.social-post .media-gallery video {
+    width: 100% !important;
+  }
+  article.social-post summary img  {
+    max-width: 100% !important;
+  }
+</style>
