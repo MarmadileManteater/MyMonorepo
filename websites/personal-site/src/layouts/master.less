@@ -88,49 +88,6 @@ main {
   max-width: 1000px;
   margin: 0 auto;
 }
-main footer {
-  padding: 1em;
-  background-color: @bg-light-2;
-  @media (prefers-color-scheme: dark) {
-    background-color: @bg-dark-1;
-  }
-}
-main footer a, main footer a:visited {
-  color: black;
-  @media (prefers-color-scheme: dark) {
-    color: white;
-  }
-}
-header {
-  display: flex;
-  justify-content: center;
-  padding-bottom: 1em;
-}
-header a {
-  min-height: 152px;
-  @media (max-width: @lg-breakpoint) {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    min-height: 236px;
-  }
-  @media (max-width: @md-breakpoint) {
-    min-height: 152px;
-  }
-}
-header img {
-  vertical-align: middle;
-}
-header img.username {
-  position: relative;
-  left: -24px;
-  @media (max-width: @lg-breakpoint) {
-    left: 0;
-  }
-  @media (max-width: @md-breakpoint) {
-    display: none;
-  }
-}
 .header-image {
   max-width: 100%;
   filter: hue-rotate(220deg) brightness(1.1);

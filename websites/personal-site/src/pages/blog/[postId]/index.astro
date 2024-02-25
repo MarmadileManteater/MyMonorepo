@@ -42,8 +42,10 @@ const longDate = formatLongDate(date)
       article.blog-post pre,
       article.blog-post h3,
       article.blog-post h4,
-      article.blog-post p:not(.tag-list, .date-text) {
+      article.blog-post p:not(.tag-list, .date-text),
+      article.blog-post ul {
         margin: 0;
+        font-weight: normal;
       }
       article.blog-post pre {
         padding-top: 0;
@@ -75,7 +77,7 @@ const longDate = formatLongDate(date)
         margin-top: -15px;
       }
       .mt-\[-40px\] {
-        margin-top: -40px;
+        margin-top: -60px !important;
       }
       .flex {
         display: flex;

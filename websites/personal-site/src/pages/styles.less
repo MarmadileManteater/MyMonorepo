@@ -90,3 +90,35 @@ section.info-and-links .info summary address a {
     margin-bottom: 0em;
   }
 }
+footer#projects {
+  padding: 1em;
+  background-color: @bg-light-2;
+  @media (prefers-color-scheme: dark) {
+    background-color: @bg-dark-1;
+  }
+}
+header#social-posts {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+  border-radius: 10px;
+  padding: 1em;
+  background-color: @bg-light-2;
+  @media (prefers-color-scheme: dark) {
+    background-color: @bg-dark-1;
+  }
+  @media (max-width: @lg-breakpoint) {
+    margin-bottom: 0;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+}
+footer#projects a, footer#projects a:visited, 
+header#social-posts a, header#social-posts a:visited {
+  color: black;
+  @media (prefers-color-scheme: dark) {
+    color: white;
+  }
+}
