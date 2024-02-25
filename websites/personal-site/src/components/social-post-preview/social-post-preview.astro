@@ -209,7 +209,11 @@ const { socialPosts }: Props = Astro.props
   }
   article.social-post .media-gallery a[data-grid-area="image1"] {
     grid-area: image1;
+  }
+  article.social-post .media-gallery a[data-grid-area="image1"] img {
     object-fit: cover;
+    height: 100%;
+    width: 100%;
   }
   a[data-grid-area="image2"] {
     grid-area: image2;
@@ -249,9 +253,13 @@ const { socialPosts }: Props = Astro.props
     display: flex;
     flex-direction: column;
   }
-  article.social-post .media-gallery img,
-  article.social-post .media-gallery video {
-    width: 100% !important;
+  article.social-post .media-gallery {
+    text-align: center;
+    background-color: black;
+  }
+  article.social-post .media-gallery [data-grid="true"] img,
+  article.social-post .media-gallery [data-grid="true"] video {
+    max-width: 100% !important;
   }
   article.social-post summary img  {
     max-width: 100% !important;
