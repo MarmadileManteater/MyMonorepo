@@ -1,9 +1,7 @@
 ---
-import { Foreach, If } from '@marmadilemanteater/astro-logic-components'
-import type { SocialPost, Media } from '@marmadilemanteater/dataservice/social-posts'
+import { Foreach } from '@marmadilemanteater/astro-logic-components'
+import type { SocialPost } from '@marmadilemanteater/dataservice/social-posts'
 import SocialPostComponent from '../social-post/social-post.astro'
-import Time from '../time.astro'
-import Emoji from '../emoji.astro'
 
 interface Props {
   socialPosts: SocialPost[]
