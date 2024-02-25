@@ -193,10 +193,15 @@ const videos = post.media.filter((item: Media) => item.url !== undefined && item
   article.social-post .media-gallery a[data-grid-area="image1"] {
     grid-area: image1;
   }
-  article.social-post .media-gallery a[data-grid-area="image1"] img {
+  article.social-post .media-gallery a[data-grid-area="image1"] img,
+  article.social-post .media-gallery a[data-grid-area="image2"] img {
     object-fit: cover;
     height: 100%;
     width: 100%;
+    @media (max-width: @lg-breakpoint) {
+      width: auto;
+      height: auto;
+    }
   }
   a[data-grid-area="image2"] {
     grid-area: image2;
