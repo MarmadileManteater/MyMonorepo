@@ -5,7 +5,8 @@ import Time from '../time.astro'
 import Emoji from '../emoji.astro'
 
 interface Props {
-  post: SocialPost
+  post: SocialPost,
+  truncateLongPost?: Boolean
 }
 
 function getGridArea(mediaType: String, index: number, length: number) {
@@ -15,7 +16,7 @@ function getGridArea(mediaType: String, index: number, length: number) {
   return `${mediaType}${index}`
 }
 
-const { post }: Props = Astro.props
+const { post, truncateLongPost = true }: Props = Astro.props
 
 let { handle, platformUrl } = post
 let siteName = ''
@@ -35,7 +36,7 @@ if (platformUrl.startsWith('https://marmadilemanteater.itch.io')) {
   platformUrl = 'https://itch.io'
 }
 const descriptionText = post.description.replace(/<\/*?[^>]*?>/g, '')
-const truncateContent = descriptionText.length > 250 && post.media[0].url !== undefined || platformUrl.startsWith('https://opengameart.org')
+const truncateContent = truncateLongPost && descriptionText.length > 250 && post.media[0].url !== undefined || platformUrl.startsWith('https://opengameart.org')
 const showTitle = !post.title.endsWith('...') && !descriptionText.startsWith(post.title)
 const images = post.media.filter((item: Media) => item.url !== undefined && !item.url.endsWith('mp4'))
 const videos = post.media.filter((item: Media) => item.url !== undefined && item.url.endsWith('mp4'))
