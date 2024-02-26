@@ -30,6 +30,9 @@ function exec(command, args = [], liveStdout = false) {
   })
 }
 
+
+const __dirname = dirname(fileURLToPath(new URL(import.meta.url)))
+
 const args = process.argv
 let executable_name = './bin/syndication_junction'
 if (process.platform === 'win32') {
@@ -45,7 +48,7 @@ if (process.platform === 'linux') {
     executable_name = `${executable_name}_openssl3_0_2`
   }
   if (executable_name !== './bin/syndication_junction') {
-    await new Promise((resolve, reject) => extract(`${executable_name}.zip`, { dir: './bin/' }, (err) => {
+    await new Promise((resolve, reject) => extract(`${executable_name}.zip`, { dir: join(__dirname, './bin/') }, (err) => {
       if (err) {
         return reject(err)
       }
@@ -57,7 +60,5 @@ if (process.platform === 'linux') {
 if (executable_name === './bin/syndication_junction') {
   console.error('Unsupported platform 🤷‍♀️; if you are using linux, make sure you have either openssl 3 or 1.1.1 installed')
 }
-
-const __dirname = dirname(fileURLToPath(new URL(import.meta.url)))
 
 await exec(join(__dirname, executable_name), process.argv.slice(2), true)
