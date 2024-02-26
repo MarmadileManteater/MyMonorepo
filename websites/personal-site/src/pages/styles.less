@@ -47,11 +47,16 @@ section.info-and-links .info .wrapper .portrait {
   }
 }
 section.info-and-links .info .wrapper .portrait img {
+  min-width: 142px;
+  min-height: 190px;
   @media (max-width: @md-breakpoint) {
-    width: 88px;
+    width: 88px;    
+    min-height: 117px;
+    min-width: 88px;
   }
   @media (max-width: @sm-breakpoint) {
-    width: 124px;
+    min-height: 165px;
+    min-width: 124px;
   }
 }
 section.info-and-links .info summary {
