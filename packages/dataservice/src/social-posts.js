@@ -3,7 +3,7 @@
 import { parseString } from 'xml2js'
 import { promisify } from 'util'
 
-const BASE_HOST = 'https://marmadilemanteater.dev/'
+const BASE_HOST = 'https://raw.githubusercontent.com/MarmadileManteater/MyMonorepo/tree/development/packages/social-feed/'
 
 const pparseString = promisify(parseString)
 // load the social feed in through vite
@@ -58,7 +58,7 @@ export async function getSocialFeedLength() {
  * @returns {Promise<SocialPost[]>}
  */
 export async function getSocialPosts(startRange, endRange = -1, host = BASE_HOST) {
-  const rssFeedString = getSocialFeed(host)
+  const rssFeedString = await getSocialFeed(host)
   const xmldom = await pparseString(rssFeedString)
   const channel = xmldom.rss.channel[0]
   if (endRange === -1) {
