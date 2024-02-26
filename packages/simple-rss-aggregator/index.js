@@ -1,5 +1,6 @@
 
 import { spawn } from 'child_process'
+import extract from 'extract-zip'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -42,6 +43,14 @@ if (process.platform === 'linux') {
   }
   if (versionNumber.startsWith('3')) {
     executable_name = `${executable_name}_openssl3_0_2`
+  }
+  if (executable_name !== './bin/syndication_junction') {
+    await new Promise((resolve, reject) => extract(`${executable_name}.zip`, (err) => {
+      if (err) {
+        return reject(err)
+      }
+      resolve()
+    }))
   }
 }
 
