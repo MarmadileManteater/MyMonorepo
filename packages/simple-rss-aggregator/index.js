@@ -38,6 +38,7 @@ if (process.platform === 'win32') {
 if (process.platform === 'linux') {
   // need to determine which executable to use based on which version of openssl is installed
   const versionNumber = (await exec('openssl', ['version'])).split(' ')[0]
+  console.log(versionNumber)
   if (versionNumber.startsWith('1.1.1')) {
     executable_name = `${executable_name}_openssl1_1_1f`
   }
