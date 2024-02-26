@@ -32,13 +32,32 @@ const socialFeed = import.meta.glob('../../static-data/feed.xml', { as: 'raw' })
 
 /**
  * 
+ * @param {string} host 
+ * @returns {Promise<string>} xml
+ */
+export async function getSocialFeed(host = BASE_HOST) {
+  return (await socialFeed['../../static-data/feed.xml']())
+    .replaceAll(BASE_HOST, host)
+}
+
+/**
+ * @returns {Promise<number>} length of the social feed
+ */
+export async function getSocialFeedLength() {
+  const feedXML = await getSocialFeed()
+  const xmldom = await pparseString(feedXML)
+  const channel = xmldom.rss.channel[0]
+  return channel.item.length
+}
+
+/**
+ * 
  * @param {number} startRange 
  * @param {number} endRange
  * @returns {Promise<SocialPost[]>}
  */
-export async function getSocialPosts(startRange, endRange = -1, host = 'https://marmadilemanteater.dev/') {
-  const rssFeedString = (await socialFeed['../../static-data/feed.xml']())
-    .replaceAll(BASE_HOST, host)
+export async function getSocialPosts(startRange, endRange = -1, host = BASE_HOST) {
+  const rssFeedString = getSocialFeed(host)
   const xmldom = await pparseString(rssFeedString)
   const channel = xmldom.rss.channel[0]
   if (endRange === -1) {
