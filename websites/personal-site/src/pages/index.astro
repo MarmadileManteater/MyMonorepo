@@ -11,9 +11,7 @@ import Emoji from '../components/emoji.astro'
 import portrait from '../../../../packages/static-data/public/images/portrait.jpg?w=142&h=190&format=webp'
 import { getSocialPosts } from '@marmadilemanteater/dataservice/social-posts'
 
-
-
-const socialPosts =await getSocialPosts(0, undefined,`${Astro.url.protocol}//${Astro.url.host}/`)
+const socialPosts =await getSocialPosts(0, 3,`${Astro.url.protocol}//${Astro.url.host}/`)
 
 const { getAllProjects } = projectsRepository
 const projects = await getAllProjects()
