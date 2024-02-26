@@ -3,6 +3,7 @@ import { Foreach, If } from '@marmadilemanteater/astro-logic-components'
 import type { SocialPost, Media } from '@marmadilemanteater/dataservice/social-posts'
 import Time from '../time.astro'
 import Emoji from '../emoji.astro'
+import { JSDOM } from 'jsdom'
 
 interface Props {
   post: SocialPost,
@@ -40,6 +41,17 @@ const truncateContent = truncateLongPost && descriptionText.length > 250 && post
 const showTitle = !post.title.endsWith('...') && !descriptionText.startsWith(post.title)
 const images = post.media.filter((item: Media) => item.url !== undefined && !item.url.endsWith('mp4'))
 const videos = post.media.filter((item: Media) => item.url !== undefined && item.url.endsWith('mp4'))
+if (platformUrl.startsWith('https://opengameart.org')) {
+  // hacky way to make preview image the media associated with the post
+  const dom = new JSDOM(post.content)
+  const thumbnail = dom.window.document.querySelector('span.file img:first-child')
+  images.push({
+    mimeType: 'image/png',
+    medium: 'image',
+    url: thumbnail.getAttribute('src'),
+    alt: thumbnail.getAttribute('alt')
+  } as Media)
+}
 ---
 <div>
   <article 

@@ -26,6 +26,6 @@ const socialPosts = await getSocialPosts(num * PAGE_LENGTH, (num + 1) * PAGE_LEN
 <MasterTemplate title="Social Feed">
   <SocialPostList {socialPosts} />
   
-  <Pagination pageNums={PAGE_NUMS} currentPage={num} baseLink='/feed'/>
+  <Pagination pageNums={PAGE_NUMS} currentPage={num} baseLink='/feed' />
 </MasterTemplate>
 

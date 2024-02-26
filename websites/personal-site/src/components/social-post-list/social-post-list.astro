@@ -2,6 +2,7 @@
 import { Foreach } from '@marmadilemanteater/astro-logic-components'
 import type { SocialPost } from '@marmadilemanteater/dataservice/social-posts'
 import SocialPostComponent from '../social-post/social-post.astro'
+import SocialProfile from '../social-profile/social-profile.astro'
 
 interface Props {
   socialPosts: SocialPost[]
@@ -10,6 +11,7 @@ interface Props {
 const { socialPosts }: Props = Astro.props
 ---
 <section class='social-post-list'>
+  <SocialProfile />
   <Foreach
     list={socialPosts}
   >

@@ -7,6 +7,7 @@ const BASE_HOST = 'https://marmadilemanteater.dev/'
 
 const pparseString = promisify(parseString)
 // load the social feed in through vite
+// @ts-expect-error
 const socialFeed = import.meta.glob('../../static-data/feed.xml', { as: 'raw' })
 
 /**
