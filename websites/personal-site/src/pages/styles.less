@@ -76,9 +76,18 @@ section.info-and-links .info summary address {
   @media (max-width: @sm-breakpoint) {
     margin-top: 1em;
   }
+  @media (max-width: @xxs-breakpoint) {
+    flex-direction: column;
+    font-size: 0;
+    margin-top: 1.5rem;
+  }
+}
+section.info-and-links .info summary address {
+  font-style: normal;
 }
 section.info-and-links .info summary address a {
   position: relative;
+  font-style: italic;
   @media (max-width: @lg-breakpoint) {
     font-size: 1.1rem;
     margin-top: 0.25em;
@@ -88,6 +97,11 @@ section.info-and-links .info summary address a {
     font-size: 1em;
     margin-top: 0em;
     margin-bottom: 0em;
+  }
+  @media (max-width: @xxs-breakpoint) {
+    font-size: 1.35rem;
+    margin-top: 0.3em;
+    margin-bottom: 0.3em;
   }
 }
 footer#projects {

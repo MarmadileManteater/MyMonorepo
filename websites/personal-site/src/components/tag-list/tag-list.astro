@@ -40,7 +40,7 @@ tags.sort((a, b) => langsWithImages.indexOf(b.name) - langsWithImages.indexOf(a.
     {(tag: Tag) => <>
       <If condition={langsWithImages.indexOf(tag.name) === -1}>
         <a class='tag' href={tag.link}>{tag.name}</a>
-        <a slot='else' href={tag.link}><img src={logos[tag.name]} width='40' class={tag.name} /></a>
+        <a slot='else' class='img-tag' href={tag.link}><img src={logos[tag.name]} width='40' class={tag.name} /></a>
       </If>
     </>}
   </Foreach>
