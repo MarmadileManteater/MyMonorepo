@@ -29,6 +29,10 @@ jobs:
 
     - name: ⬇ Download depedencies
       run: |
+        openssl version
+
+    - name: ⬇ Download depedencies
+      run: |
         pnpm install
         
     - name: Test Syndication Junction
