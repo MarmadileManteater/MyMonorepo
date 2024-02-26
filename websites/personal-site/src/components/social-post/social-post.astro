@@ -57,6 +57,7 @@ if (platformUrl.startsWith('https://opengameart.org')) {
   <article 
     class='social-post'
     data-length={truncateContent ? 'long' : 'short'}
+    data-platform={platformUrl}
     >
     <div class='content'>
       <div class='author'>
@@ -170,6 +171,17 @@ if (platformUrl.startsWith('https://opengameart.org')) {
     text-align: center;
     bottom: 10px;
     color: white;
+  }
+  
+  article.social-post[data-platform="https://opengameart.org"] .media-gallery {
+    @media (max-width: @lg-breakpoint) {
+      /* 
+        opengameart posts display their main image in the media gallery, 
+        but it is also in the content, 
+        so this de-duplicates them 
+      */
+      display: none;
+    }
   }
 
   article.social-post div.author {
