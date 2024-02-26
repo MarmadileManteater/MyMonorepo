@@ -11,7 +11,7 @@ import Emoji from '../components/emoji.astro'
 import portrait from '../../../../packages/static-data/public/images/portrait.jpg?w=142&h=190&format=webp'
 import { getSocialPosts } from '@marmadilemanteater/dataservice/social-posts'
 
-const socialPosts =await getSocialPosts(0, 3,`${Astro.url.protocol}//${Astro.url.host}/`)
+const socialPosts = await getSocialPosts(0, 3,`${Astro.url.protocol}//${Astro.url.host}/`)
 
 const { getAllProjects } = projectsRepository
 const projects = await getAllProjects()
@@ -59,8 +59,12 @@ const firstStars = projects[index]
     class='break-on-mobile'
     startOffset={1}
   />
-  <footer>
+  <footer id='projects'>
     <a href="/projects">View more &raquo;</a>
   </footer>
+  <header id='social-posts'>
+    <a href='/feed' ><Emoji emoji='💬' /> my social feed &raquo;</a>
+    <a href='/feed/feed.xml'>rss&nbsp;<Emoji emoji='📰' /></a>
+  </header>
   <SocialPostPreview {socialPosts} />
 </MasterTemplate>
