@@ -48,7 +48,7 @@ if (process.platform === 'linux') {
     executable_name = `${executable_name}_openssl3_0_2`
   }
   if (executable_name !== './bin/syndication_junction') {
-    await new Promise((resolve, reject) => extract(`${executable_name}.zip`, { dir: join(__dirname, './bin/') }, (err) => {
+    await new Promise((resolve, reject) => extract(join(__dirname, `${executable_name}.zip`), { dir: join(__dirname, './bin/') }, (err) => {
       if (err) {
         return reject(err)
       }
