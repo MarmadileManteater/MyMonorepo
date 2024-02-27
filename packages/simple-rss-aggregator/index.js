@@ -1,6 +1,6 @@
 
 import { spawn } from 'child_process'
-import extract from 'extract-zip'
+import { chmod } from 'fs/promises'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
@@ -48,12 +48,8 @@ if (process.platform === 'linux') {
     executable_name = `${executable_name}_openssl3_0_2`
   }
   if (executable_name !== './bin/syndication_junction') {
-    await new Promise((resolve, reject) => extract(join(__dirname, `${executable_name}.zip`), { dir: join(__dirname, './bin/') }, (err) => {
-      if (err) {
-        return reject(err)
-      }
-      resolve()
-    }))
+    await exec('unzip', [join(__dirname, `${executable_name}.zip`), '-d', join(__dirname, './bin/')])
+    await chmod(join(__dirname, executable_name), 0o100)
   }
 }
 
