@@ -39,7 +39,7 @@ jobs:
       run: |
         pnpm update-projects --access-token=${{ secrets.GITHUB_TOKEN }} --output-file=./static-data.log
         cat static-data.log
-        git add *
+        git add .
         git commit -F ./static-data.log || true
         git push
 
