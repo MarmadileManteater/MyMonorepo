@@ -3,13 +3,14 @@
 
 import { sanitizeTitle, unhotlinkImages, update } from './projects.js'
 import { fromJSONFile } from '@marmadilemanteater/dataservice/projects'
-import { rm } from 'fs/promises'
+import { appendFile, readFile, rm, writeFile } from 'fs/promises'
 import { dirname, join } from 'path'
 import { fileURLToPath } from 'url'
 
 /** @type {'update-projects'|'unhotlink-images'|'clean-images'|null} */
 let action = null
 let accessToken = null
+let outputFile = null
 let debug = false
 let dryRun = false
 for (const arg of process.argv) {
@@ -18,6 +19,9 @@ for (const arg of process.argv) {
   }
   if (arg.startsWith('--access-token=')) {
     accessToken = arg.substring('--access-token='.length)
+  }
+  if (arg.startsWith('--output-file=')) {
+    outputFile = arg.substring('--output-file='.length)
   }
   if (arg === '--debug') {
     debug = true
@@ -40,8 +44,33 @@ const __dirname = dirname(fileURLToPath(import.meta.url))
 const { getAllProjects, writeAllProjects } = fromJSONFile(`${__dirname}/../../static-data/projects.json`)
 
 if (action === 'update-projects') {
+  if (outputFile !== null) {
+    await writeFile(outputFile, '')
+  }
   const projects = await getAllProjects()
-  const updatedProjects = await update(projects, environmentConfig || undefined, debug)
+  const updatedProjects = await update(projects, environmentConfig || undefined, debug, async (text) => {
+    if (outputFile !== null) {
+      await appendFile(outputFile, `${text}\r\n`)
+    } else {
+      console.log(text)
+    }
+  })
+  if (outputFile) {
+    const outputLog = (await readFile(outputFile)).toString().trim()
+    const changes = outputLog.split('\r\n\r\n')
+    const startsWith = {}
+    for (const change of changes) {
+      const startsWithWord = change.split(' ')[0]
+      if (startsWithWord in startsWith) {
+        startsWith[startsWithWord]++
+      } else {
+        startsWith[startsWithWord] = 1
+      }
+    }
+    const numberOfChanges = changes.length
+    const numberOfProjects = Object.keys(startsWith).length
+    await writeFile(outputFile, `Pulled ${numberOfChanges} changes for ${numberOfProjects} projects\r\n\r\n${outputLog}`)
+  }
   if (!dryRun) {
     await writeAllProjects(updatedProjects)
   } else {

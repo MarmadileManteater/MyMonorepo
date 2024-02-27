@@ -90,7 +90,7 @@ async function fetchGithub(path, endpoint = null, environmentFile = './environme
  * @param {boolean} debug whether to print debug logs
  * @returns {Promise<Array<import('@marmadilemanteater/dataservice/projects').Project>>} 
  */
-export async function update(projects, environmentFile = './environment.json', debug = false) {
+export async function update(projects, environmentFile = './environment.json', debug = false, log = console.log, error = console.error) {
   for (const project of projects) {
     let updated = false
     try {
@@ -104,20 +104,20 @@ export async function update(projects, environmentFile = './environment.json', d
         updated = true
         const diff = Math.abs(repo.stargazers_count - project.ghStars)
         const comparisonWord = repo.stargazers_count > project.ghStars ? 'more' : 'less'
-        console.log(`${project.title} has ${diff} ${comparisonWord} star${diff !== 1 ? 's' : ''}.`)
-        console.log(`${project.ghStars}⭐ -> ${repo.stargazers_count}🌠`)
+        log(`${project.title} has ${diff} ${comparisonWord} star${diff !== 1 ? 's' : ''}.\r\n${project.ghStars}⭐ -> ${repo.stargazers_count}🌠\r\n`)
         project.ghStars = repo.stargazers_count
       }
       if (repo.forks !== project.ghForks) {
         updated = true
         const diff = Math.abs(repo.forks - project.ghForks)
         const comparisonWord = repo.forks > project.ghForks ? 'more' : 'less'
+        let text = ''
         if (!isNaN(diff)) {
-          console.log(`${project.title} has ${diff} ${comparisonWord} fork${diff !== 1 ? 's' : ''}.`)
+          text = `${project.title} has ${diff} ${comparisonWord} fork${diff !== 1 ? 's' : ''}.`
         } else {
-          console.log(`${project.title} has new data for forks.`)
+          text = `${project.title} has new data for forks.`
         }
-        console.log(`${project.ghForks} -> ${repo.forks}🍴`)
+        log(`${text}\r\n${project.ghForks} -> ${repo.forks}🍴\r\n`)
         project.ghForks = repo.forks
       }
       if (project.pullUpdatedInfoFrom === 'commits') {
@@ -127,14 +127,14 @@ export async function update(projects, environmentFile = './environment.json', d
           if (project.lastUpdate !== commits[0].commit.author.date) {
             updated = true
             project.lastUpdate = commits[0].commit.author.date
-            console.log(`${project.title} has a new commit!\r\n\`lastUpdate\` changed to \`${project.lastUpdate}\`.`)
+            await log(`${project.title} has a new commit!\r\n\`lastUpdate\` -> \`${project.lastUpdate}\``)
           }
           const { html_url }= /** @type {GithubCommitSecondRequest} */ (await (await fetchGithub(commits[0].commit.url, null, environmentFile)).json())
           if (project.lastUpdateUrl !== html_url) {
             
             updated = true
             project.lastUpdateUrl = html_url
-            console.log(`${project.title} has a new commit link!\r\n\`lastUpdateUrl\` changed to \`${project.lastUpdateUrl}\`.`)
+            await log(`\`lastUpdateUrl\` -> \`${project.lastUpdateUrl}\`\r\n`)
           }
         }
       }
@@ -145,24 +145,24 @@ export async function update(projects, environmentFile = './environment.json', d
           if (project.lastUpdate !== releases[0].published_at) {
             updated = true
             project.lastUpdate = releases[0].published_at
-            console.log(`${project.title} has a new release!\r\n\`lastUpdate\` changed to \`${project.lastUpdate}\`.`)
+            await log(`${project.title} has a new release!\r\n\`lastUpdate\` -> \`${project.lastUpdate}\``)
           }
           if (project.lastUpdateUrl !== releases[0].html_url) {
             updated = true
             project.lastUpdateUrl = releases[0].html_url
-            console.log(`${project.title} has a new release link!\r\n\`lastUpdateUrl\` changed to \`${project.lastUpdateUrl}\`.`)
+            await log(`\`lastUpdateUrl\` -> \`${project.lastUpdateUrl}\`\r\n`)
           }
         }
       }
     } catch (exception) {
-      console.error(exception, `\r\n⚠ ${project.title} failed to complete its update.`)
+      error(exception, `\r\n⚠ ${project.title} failed to complete its update.`)
       // if ratelimited, end there
       if ('type' in exception && exception['type'] === 'ratelimited')
-        console.error('Since this is a ratelimited error, the update sequence will now end.')
+        error('Since this is a ratelimited error, the update sequence will now end.')
         break
     }
     if (!updated && debug) {
-      console.log(`[DEBUG]: ${project.title} was not updated.`)
+      log(`[DEBUG]: ${project.title} was not updated.`)
     }
   }
   return projects
