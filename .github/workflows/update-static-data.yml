@@ -2,10 +2,9 @@ name: 👆 Update social feed + gh data
 
 on:
   workflow_dispatch:
-  push:
-    branches: [ "development" ]
-  pull_request:
-    branches: [ "development" ]
+
+permissions:
+  contents: write
 
 jobs:
   build:
