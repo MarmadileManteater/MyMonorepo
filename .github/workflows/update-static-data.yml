@@ -36,7 +36,7 @@ jobs:
 
     - name: 🐶 Fetch gh static data
       run: |
-        pnpm update-projects --access-token=${{ secrets.GITHUB_TOKEN }} --output-file=./static-data.log
+        pnpm update-projects --access-token=${{ secrets.ACCESS_TOKEN }} --output-file=./static-data.log
         cat static-data.log
         git add .
         git config --global user.name "github-actions[bot]"
