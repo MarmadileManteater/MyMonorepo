@@ -39,6 +39,8 @@ jobs:
         pnpm update-projects --access-token=${{ secrets.GITHUB_TOKEN }} --output-file=./static-data.log
         cat static-data.log
         git add .
+        git config --global user.name "github-actions[bot]"
+        git config --global user.email "github-actions[bot]@MarmadileManteater.github.io"
         git commit -F ./static-data.log || true
         git push
 
