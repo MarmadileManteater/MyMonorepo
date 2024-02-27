@@ -31,6 +31,9 @@ jobs:
     - name: ⬇ Download depedencies
       run: |
         pnpm install
+    - name: 🚧 Setup environment
+      run: |
+       pnpm run setup
 
     - name: 🐶 Fetch gh static data
       run: |
